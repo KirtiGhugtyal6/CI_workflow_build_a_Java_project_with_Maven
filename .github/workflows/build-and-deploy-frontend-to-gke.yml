@@ -45,26 +45,7 @@ jobs:
     - name: Prepare Docker
       run: |
         echo "==========Docker Login=========="
-        echo ${{ secrets.TOKEN }} | docker login docker.pkg.github.com -u piyushknoldus --password-stdin
+        echo ${{ secrets.GIT_TOKEN }} | docker login ghcr.io -u kirtighugtyal6 --password-stdin
         docker pull docker.pkg.github.com/knoldus/leaderboard/knoldus_leaderboard_ui_qa:latest
         docker tag docker.pkg.github.com/knoldus/leaderboard/knoldus_leaderboard_ui_qa:latest docker.pkg.github.com/knoldus/leaderboard/knoldus_leaderboard_ui_qa-archived:latest
-    # Build the Docker image
-    - name: Package Frontend
-      working-directory: ui
-      run: |
-        sed -i 's/ENVIRONMENT/qa/g' Dockerfile
-        docker build -t docker.pkg.github.com/knoldus/leaderboard/knoldus_leaderboard_ui_qa:latest .
-    # Publish the Docker image to Github Packages
-    - name: Publish Docker Image to Github Packages
-      run: |
-        docker push docker.pkg.github.com/knoldus/leaderboard/knoldus_leaderboard_ui_qa:latest
-        docker push docker.pkg.github.com/knoldus/leaderboard/knoldus_leaderboard_ui_qa-archived:latest
-    # Deploy Leaderboard to GKE
-    - name: Deploy to GKE
-      run: |-
-        kubectl scale deployment frontend --replicas 0 -n leaderboard
-        sleep 30
-        kubectl scale deployment frontend --replicas 1 -n leaderboard
-        
-          deploy-frontend-on-prod:
    
