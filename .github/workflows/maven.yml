@@ -28,10 +28,10 @@ jobs:
     - name: Build docker image 
       working-directory: .
       run: |
-            docker build -t  ghcr.io/KirtiGhugtyal6/testfile/springapp:latest .
+            docker build -t  ghcr.io/kirtighugtyal6/testfile/springapp:latest .
     - name: dockertoken
       run: |
-        echo ${{ secrets.DOCKERTOKEN }} | docker login ghcr.io -u KirtiGhugtyal6 --password-stdin
+        echo ${{ secrets.DOCKERTOKEN }} | docker login ghcr.io -u kirtighugtyal6 --password-stdin
     
     - name: publish docker image
       run: |
