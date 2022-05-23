@@ -12,7 +12,7 @@ jobs:
     env:
       GKE_CLUSTER: gke-qa-prod
     name: deploy on backend QA
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/dev'
     runs-on: ubuntu-18.04
     steps:
     - name: Checkout
