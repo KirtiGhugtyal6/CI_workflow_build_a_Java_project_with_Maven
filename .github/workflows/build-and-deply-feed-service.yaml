@@ -35,7 +35,7 @@ jobs:
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
-        credentials_json: '${{ secrets.GKE_SA_KEY_QA }}'
+        credentials_json: '${{ secrets.TESTFILE_SVC }}'
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v0'
