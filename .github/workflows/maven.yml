@@ -35,7 +35,7 @@ jobs:
     
     - name: publish docker image
       run: |
-        docker push  ghcr.io/KirtiGhugtyal6/testfile/springapp:latest
+        docker push  ghcr.io/kirtighugtyal6/testfile/springapp:latest
 
     - name: commmand check
       run: echo ${{github.event.inputs.deploy == 'backend' || github.event.inputs.deploy == 'both'  && github.ref == 'refs/heads/main'}}
