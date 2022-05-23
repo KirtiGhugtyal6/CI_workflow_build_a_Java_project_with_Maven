@@ -54,4 +54,20 @@ jobs:
         echo ${{ secrets.GIT_TOKEN }} | docker login ghcr.io -u kirtighugtyal6 --password-stdin
         docker pull knoldusinc/leaderboard-qa:backend
         docker tag knoldusinc/leaderboard-qa:backend knoldusinc/knoldus_leaderboard-qa-archived:latest
+        
+             # Build the Docker image
+    - name: Package and Build Backend
+      working-directory: .
+      run: |
+            docker build -t  ghcr.io/kirtighugtyal6/testfile/springapp:latest .
+    # Publish the Docker image to Github Packages
+    - name: Publish Docker Image to Github Packages
+      run: |
+        docker push  ghcr.io/kirtighugtyal6/testfile/springapp:latest
+    # Deploy Leaderboard to GKE
+    - name: Deploy to GKE
+      run: |-
+        kubectl scale deployment backend --replicas 0 -n leaderboard
+        sleep 1m
+        kubectl scale deployment backend --replicas 1 -n leaderboard
 
