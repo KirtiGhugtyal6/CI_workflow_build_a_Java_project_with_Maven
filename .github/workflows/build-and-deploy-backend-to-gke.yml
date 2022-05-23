@@ -1,0 +1,138 @@
+name: Build and Deploy Backend
+on:
+  workflow_dispatch:
+    
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_ZONE: us-central1-c
+
+
+jobs:
+  deploy-backend-on-qa:
+    env:
+      GKE_CLUSTER: gke-qa-prod
+    name: deploy on backend QA
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Setup JDK
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    
+    - name: Cache SBT
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.ivy2/cache
+          ~/.sbt
+        key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.TESTFILE_SVC }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
+
+
+    # Configure Docker to use the gcloud command-line tool as a credential
+    - run: |-
+        gcloud --quiet auth configure-docker
+    # Get the GKE credentials so we can deploy to the cluster
+    
+    - name: Get the GKE credentials so we can deploy to the cluster
+      run: |-
+        gcloud container clusters get-credentials gke-qa-prod --zone "$GKE_ZONE"
+    - name: Prepare Docker
+      run: |
+        echo "==========Docker Login=========="
+        echo ${{ secrets.PIYUSH_TEMP_GITHUB }} | docker login -u knoldusinc --password-stdin
+        docker pull knoldusinc/leaderboard-qa:backend
+        docker tag knoldusinc/leaderboard-qa:backend knoldusinc/knoldus_leaderboard-qa-archived:latest
+    # Build the Docker image
+    - name: Package and Build Backend
+      working-directory: app
+      run: |
+        sbt docker:publishLocal
+    # Publish the Docker image to Github Packages
+    - name: Publish Docker Image to Github Packages
+      run: |
+        docker tag knoldus_leaderboard:0.1 knoldusinc/leaderboard-qa:backend
+        docker push knoldusinc/leaderboard-qa:backend
+    # Deploy Leaderboard to GKE
+    - name: Deploy to GKE
+      run: |-
+        kubectl scale deployment backend --replicas 0 -n leaderboard
+        sleep 1m
+        kubectl scale deployment backend --replicas 1 -n leaderboard
+  deploy-backend-on-prod:
+    if: ${{ github.ref_name == 'master' }}
+    env:
+      GKE_CLUSTER: allknols
+    name: deploy backend on production
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Setup JDK
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    
+    - name: Cache SBT
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.ivy2/cache
+          ~/.sbt
+        key: ${{ runner.os }}-sbt-${{ hashFiles('**/build.sbt') }}
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
+
+
+    # Configure Docker to use the gcloud command-line tool as a credential
+    - run: |-
+        gcloud --quiet auth configure-docker
+    # Get the GKE credentials so we can deploy to the cluster
+    - name: Get the GKE credentials so we can deploy to the cluster
+
+      run: |-
+        gcloud container clusters get-credentials allknols --zone "$GKE_ZONE"
+    - name: Prepare Docker
+
+      run: |
+        echo "==========Docker Login=========="
+        echo ${{ secrets.PIYUSH_TEMP_GITHUB }} | docker login -u knoldusinc --password-stdin
+        #docker pull knoldusinc/leaderboard:backend
+        #docker tag knoldusinc/leaderboard:backend knoldusinc/knoldus_leaderboard-archived:latest
+    # Build the Docker image
+    - name: Package and Build Backend
+      working-directory: app
+      run: |
+        sbt docker:publishLocal
+    # Publish the Docker image to Github Packages
+    - name: Publish Docker Image to Github Packages
+
+      run: |
+        docker tag knoldus_leaderboard:0.1 knoldusinc/leaderboard:backend
+        docker push knoldusinc/leaderboard:backend
+        #docker push knoldusinc/knoldus_leaderboard-archived:latest
+    # Deploy Leaderboard to GKE
+    - name: Deploy to GKE
+      run: |-
+        kubectl scale deployment backend --replicas 0 -n leaderboard
+        sleep 1m
+        kubectl scale deployment backend --replicas 1 -n leaderboard
