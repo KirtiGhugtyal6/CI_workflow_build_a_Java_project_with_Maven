@@ -60,3 +60,8 @@ jobs:
       working-directory: app
       run: |
         sbt docker:publishLocal
+    - uses: anchore/sbom-action@v0
+      with: 
+        image: test-image:latest
+        artifact-name: report.spdx-json
+        output-file: ./report.spdx-json
