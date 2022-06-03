@@ -49,7 +49,7 @@ jobs:
         syft test-image:latest --scope all-layers
         
     - name: Send mail        
-      uses: KirtiGhugtyal6/CI_workflow_build_a_Java_project_with_Maven@v3
+      uses: actions/checkout@v3
       with:
         server_address: smtp.gmail.com
         server_port: 465
