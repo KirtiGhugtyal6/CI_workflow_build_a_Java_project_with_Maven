@@ -37,12 +37,13 @@ jobs:
     - uses: anchore/sbom-action@v0
       with: 
         image: test-image:latest
-        artifact-name: report.spdx
-        output-file: ./report.spdx
+        format: spdx
+        artifact-name: report.cyclonedx
+        output-file: ./report.cyclonedx
         
     - name: cat report
       run: |
-        cat report.spdx
+        cat report.cyclonedx
 #     - name: Send mail
 #       uses: kirti/action-send-mail@v3
 #       with:
