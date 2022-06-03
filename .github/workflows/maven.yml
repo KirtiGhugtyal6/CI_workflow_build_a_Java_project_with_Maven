@@ -48,22 +48,22 @@ jobs:
         syft test-image:latest
         syft test-image:latest --scope all-layers
         
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Send mail
-      uses: ./
-      with:
-        server_address: ${{secrets.ADDRESS}}
-        server_port: 465
-        username: ${{secrets.USERNAME}}
-        password: ${{secrets.PASSWORD}}
-        subject: ${{matrix.subject}}
-        body: ${{matrix.body}}
-        html_body: ${{matrix.html_body}}
-        to: ${{github.event.pusher.email}}
-        from: github-actions
-        attachments: ${{matrix.attachments}}
-        priority: high
+#     - name: Checkout code
+#       uses: actions/checkout@v2
+#     - name: Send mail
+#       uses: ./
+#       with:
+#         server_address: ${{secrets.ADDRESS}}
+#         server_port: 465
+#         username: ${{secrets.USERNAME}}
+#         password: ${{secrets.PASSWORD}}
+#         subject: ${{matrix.subject}}
+#         body: ${{matrix.body}}
+#         html_body: ${{matrix.html_body}}
+#         to: ${{github.event.pusher.email}}
+#         from: github-actions
+#         attachments: ${{matrix.attachments}}
+#         priority: high
     
     - name: dockertoken
       run: |
