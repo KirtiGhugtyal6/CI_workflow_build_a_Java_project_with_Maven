@@ -48,25 +48,17 @@ jobs:
         syft test-image:latest
         syft test-image:latest --scope all-layers
         
-#     - name: Send mail        
-#       uses: kirti/action-send-mail@v3
-#       with:
-#     # Required mail server address:
-#         server_address: smtp.gmail.com
-#      # Required mail server port:
-#         server_port: 465
-#     # Optional (recommended): mail server username:
-#         username: ${{secrets.MAIL_USERNAME}}
-#     # Optional (recommended) mail server password:
-#         password: ${{secrets.MAIL_PASSWORD}}
-#     # Required mail subject:
-#         subject: Github Actions job result
-#     # Required recipients' addresses:
-#         to: keetyal@gmail.com
-#     # Required sender full name (address can be skipped):
-#         from: Kirti Ghugtyal # <user@example.com>
-#     # Optional whether this connection use TLS (default is true if server_port is 465)
-#         secure: true
+    - name: Send mail        
+      uses: actions/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        subject: Github Actions job result
+        to: keetyal@gmail.com
+        from: kirti.ghugtyal@knoldus.com
+        secure: true
     
     - name: dockertoken
       run: |
