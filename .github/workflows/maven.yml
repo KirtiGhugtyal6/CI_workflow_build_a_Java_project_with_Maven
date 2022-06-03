@@ -48,17 +48,17 @@ jobs:
         syft test-image:latest
         syft test-image:latest --scope all-layers
         
-#     - name: Send mail        
-#       uses: KirtiGhugtyal6/CI_workflow_build_a_Java_project_with_Maven@v3
-#       with:
-#         server_address: smtp.gmail.com
-#         server_port: 465
-#         username: ${{secrets.MAIL_USERNAME}}
-#         password: ${{secrets.MAIL_PASSWORD}}
-#         subject: Github Actions job result
-#         to: keetyal@gmail.com
-#         from: kirti.ghugtyal@knoldus.com
-#         secure: true
+    - name: Send mail        
+      uses: KirtiGhugtyal6/CI_workflow_build_a_Java_project_with_Maven@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 465
+        username: ${{secrets.MAIL_USERNAME}}
+        password: ${{secrets.MAIL_PASSWORD}}
+        subject: Github Actions job result
+        to: keetyal@gmail.com
+        from: kirti.ghugtyal@knoldus.com
+        secure: true
     
     - name: dockertoken
       run: |
