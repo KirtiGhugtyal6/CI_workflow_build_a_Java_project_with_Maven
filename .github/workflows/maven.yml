@@ -53,11 +53,11 @@ jobs:
       with:
         server_address: smtp.gmail.com
         server_port: 465
-        username: ${{secrets.MAIL_USERNAME}}
-        password: ${{secrets.MAIL_PASSWORD}}
+#         username: ${{secrets.MAIL_USERNAME}}
+#         password: ${{secrets.MAIL_PASSWORD}}
         subject: Github Actions job result
-        to: keetyal@gmail.com
-        from: kirti.ghugtyal@knoldus.com
+        to: kirti.ghugtyal@knoldus.com
+        from: Kirti GHugtyal
         secure: true
     
     - name: dockertoken
