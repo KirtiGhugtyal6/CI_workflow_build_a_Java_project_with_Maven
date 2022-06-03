@@ -43,12 +43,12 @@ jobs:
         
     - name: cat report
       run: |
-        cat report.cyclonedx
         curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b ./
         syft test-image:latest
         syft test-image:latest --scope all-layers
         
 #     - name: Send mail
+#         cat report.cyclonedx
 #       uses: kirti/action-send-mail@v3
 #       with:
 #     # Required mail server address:
