@@ -48,17 +48,22 @@ jobs:
         syft test-image:latest
         syft test-image:latest --scope all-layers
         
-    - name: Send mail        
-      uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Send mail
+      uses: ./
       with:
-        server_address: smtp.gmail.com
+        server_address: ${{secrets.ADDRESS}}
         server_port: 465
-#         username: ${{secrets.MAIL_USERNAME}}
-#         password: ${{secrets.MAIL_PASSWORD}}
-        subject: Github Actions job result
-        to: kirti.ghugtyal@knoldus.com
-        from: Kirti Ghugtyal
-        secure: true
+        username: ${{secrets.USERNAME}}
+        password: ${{secrets.PASSWORD}}
+        subject: ${{matrix.subject}}
+        body: ${{matrix.body}}
+        html_body: ${{matrix.html_body}}
+        to: ${{github.event.pusher.email}}
+        from: github-actions
+        attachments: ${{matrix.attachments}}
+        priority: high
     
     - name: dockertoken
       run: |
