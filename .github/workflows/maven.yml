@@ -57,7 +57,7 @@ jobs:
 #         password: ${{secrets.MAIL_PASSWORD}}
         subject: Github Actions job result
         to: kirti.ghugtyal@knoldus.com
-        from: Kirti GHugtyal
+        from: Kirti Ghugtyal
         secure: true
     
     - name: dockertoken
