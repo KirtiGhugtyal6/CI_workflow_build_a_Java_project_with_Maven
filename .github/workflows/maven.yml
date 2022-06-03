@@ -29,6 +29,22 @@ jobs:
       working-directory: .
       run: |
             docker build -t  ghcr.io/kirtighugtyal6/testfile/springapp:latest .
+      
+    - name: Package Frontend
+      run: |
+        docker build -t test-image .
+    - uses: anchore/sbom-action@v0
+      with: 
+        image: test-image:latest
+        artifact-name: report.spdx-json
+        output-file: ./report.spdx-json
+
+    - name: cat
+      run: |
+        pwd
+        ls
+        cat report.spdx-json
+        
     - name: dockertoken
       run: |
         echo ${{ secrets.GIT_TOKEN }} | docker login ghcr.io -u kirtighugtyal6 --password-stdin
