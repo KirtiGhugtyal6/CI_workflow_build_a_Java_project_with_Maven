@@ -40,6 +40,10 @@ jobs:
         artifact-name: report.spdx-json
         output-file: ./report.spdx-json
         
+    - name: cat report
+      run: |
+        cat report.spdx-json
+        
     - name: dockertoken
       run: |
         echo ${{ secrets.GIT_TOKEN }} | docker login ghcr.io -u kirtighugtyal6 --password-stdin
