@@ -37,7 +37,7 @@ jobs:
     - uses: anchore/sbom-action@v0
       with: 
         image: test-image:latest
-        format: spdx
+        format: cyclonedx
         artifact-name: report.cyclonedx
         output-file: ./report.cyclonedx
         
