@@ -43,7 +43,6 @@ jobs:
         
     - name: cat report
       run: |
-        report.cyclonedx > test.txt
         cat report.cyclonedx
         curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b ./
         syft test-image:latest
