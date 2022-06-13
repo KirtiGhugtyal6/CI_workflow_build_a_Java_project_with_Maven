@@ -6,7 +6,8 @@ name: Java CI with Maven
 on:
   push:
     branches: [ main ]
-
+    paths:
+      - CI_workflow_build_a_Java_project_with_Maven 
 jobs:
   build:
 
