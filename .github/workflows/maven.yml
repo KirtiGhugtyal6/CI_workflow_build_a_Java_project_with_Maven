@@ -7,7 +7,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - CI_workflow_build_a_Java_project_with_Maven 
+      - .github/workflows/maven.yml
+
 jobs:
   build:
 
