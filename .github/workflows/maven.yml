@@ -68,6 +68,17 @@ jobs:
       run: echo ${{github.event.inputs.deploy == 'backend' || github.event.inputs.deploy == 'both'  && github.ref == 'refs/heads/main'}}
     - name: print
       run: echo 'both'
+      
+    - name: Create Pull Request
+      if: failure()
+      uses: peter-evans/create-pull-request@v4.0.4
+      with:
+          base: "main"
+          title: "Updated README.md"
+          branch: "chore/update-readme"
+          commit-message: "Updated README.md"
+          body: "Updated README.md"
+
 
 
 
